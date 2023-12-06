@@ -1,0 +1,26 @@
+{
+  "name": "findnest-app",
+  "version": "1.0.0",
+  "description": "Electron and Selenium-powered app for automating product searches.",
+  "main": "index.js",
+  "scripts": {
+    "test": "Leave it blank or specify a test command if you have automated tests."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khaimed/FindNest-App.git"
+  },
+  "keywords": [
+    "electron",
+    "selenium",
+    "automation",
+    "product",
+    "search"
+  ],
+  "author": "Khalid Ait M'Hamed",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/khaimed/FindNest-App/issues"
+  },
+  "homepage": "https://github.com/khaimed/FindNest-App#readme"
+}
