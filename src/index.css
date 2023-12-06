@@ -64,6 +64,8 @@ body{
   background-color: #666666;
   border-radius: 10px;
   padding: 10px;
+  display: flex;
+  justify-content: space-around;
 }
 .container select {
   width: auto;
@@ -142,11 +144,40 @@ body{
 .result .close{
   width: 34px;
   height: 34px;
-  background-color: red;
   position: absolute;
   right: 0;
   border-bottom-left-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
+.result .close span{
+  width: 30px;
+}
+.result .close span:before{
+  content: '';
+  position: absolute;
+  bottom: 13px;
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #f7f7f7;
+  align-self: flex-start;
+  transform: rotate(45deg);
+}
+.result .close span:after{
+  content: '';
+  position: absolute;
+  top: 18px;
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #f7f7f7;
+  align-self: flex-end;
+  transform: rotate(135deg);
+}
+
 .result .container{
   width: 90%;
   padding: 34px 28px;
@@ -165,16 +196,58 @@ body{
   display: block;
 }
 .result .container .product{
-  height: 250px;
-  flex: 1 1 250px;
+  /* height: 250px;
+  flex: 1 1 250px; */
   background-color: #2288c8;
   border-radius: 4px;
 }
-.result .extract_button{
-  height: 34px;
+.result .container .product a {
+  display: block;
+  width: 90%;
+  height: 300px;
+  margin: auto;
+  padding: 10px 0;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+}
+.result .container .product img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 5px;
+}
+.result .container .product .product_title{
+  font-size: 28px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(-180px);
+  transition: all 0.7s;
+}
+.result .container .product a:hover .product_title{
+  opacity: 1;
+  transform: translateY(-200px);
+}
+.result .container .product .product_price{
+  font-size: 22px;
+  line-height: 10px;
+  font-weight: bold;
+  opacity: 0;
+  transform: translateY(-140px);
+  transition: all 0.7s;
+}
+.result .container .product a:hover .product_price{
+  opacity: 1;
+  transform: translateY(-160px);
+}
+.result form {
   position: absolute;
   bottom: 0;
   margin-bottom: 17px;
+}
+.result .extract_button{
+  height: 34px;
   padding: 0 10px;
   background: #1a1a1a;
   color: white;

@@ -78,10 +78,10 @@ ipcMain.on('avito-caller', async (event, value) => {
     }
     // Upload Data
     const uploadData = async () => {
-      let titles = await driver.findElements(By.className('czqClV'))
-      let images = await driver.findElements(By.className('dQOodK'))
-      let prices = await driver.findElements(By.className('dRjnHr'))
-      let urls = await driver.findElements(By.className('eTbzNs'))
+      let titles = await driver.findElements(By.xpath('/html/body/div[1]/div/main/div/div[5]/div[1]/div/div[3]/a/div[3]/div/p'))
+      let images = await driver.findElements(By.xpath('/html/body/div[1]/div/main/div/div[5]/div[1]/div/div[3]/a/div//img'))
+      let prices = await driver.findElements(By.xpath('/html/body/div[1]/div/main/div/div[5]/div[1]/div/div[3]/a/div[3]/div/div/p'))
+      let urls = await driver.findElements(By.xpath('/html/body/div[1]/div/main/div/div[5]/div[1]/div/div[3]/a'))
       for (let i = 0; i < titles.length; i++) {
         if (prices[i]) {
           let title = await titles[i].getText();
