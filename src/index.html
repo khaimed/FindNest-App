@@ -1,12 +1,57 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-  </body>
-</html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>FindNest App</title>
+  <link rel="stylesheet" href="index.css" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'">
+</head>
+<body>
+  <div class="menu">
+    <div class="logo">
+      <span id="khaimed_button"><img src="./img/logo.png" alt="Logo"></span>
+    </div>
+    <div class="social_media">
+      <span id="facebook_button"><img src="./img/social_media/facebook.png" alt="facebook"></span>
+      <span id="instagram_button"><img src="./img/social_media/instagram.png" alt="instagram"></span>
+      <span id="linkedin_button"><img src="./img/social_media/linkedin.png" alt="linkedin"></span>
+      <span id="twitter_button"><img src="./img/social_media/twitter.png" alt="twitter"></span>
+      <span id="youtube_button"><img src="./img/social_media/youtube.png" alt="youtube"></span>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+      <h1 class="title">FindNest App</h1>
+      <div class="item">
+        <select>
+          <option value="none">Please choose</option>
+          <option value="avito">Avito</option>
+          <option value="jumia">Jumia</option>
+          <option value="aliexpress">AliExpress</option>
+          <option value="banggood">Banggood</option>
+        </select>
+        <input type="text">
+        <input class="search" type="button" value="Search">
+      </div>
+    </div>
+    <div class="load" id="load_zone">
+      <div id="is_number">0%</div>
+      <div class="rectangular">
+        <div id="is_charge"></div>
+      </div>
+      <input class="stop" type="button" value="Arrêter" id="stop">
+    </div>
+    <div class="result">
+      <div class="close"></div>
+      <div class="container" id="container">
+        
+      </div>
+      <form action="../data_file/data.xlsx">
+        <button class="extract_button" type="submit">Extract by Execl</button>
+      </form>
+    </div>
+</div>
+<div class="footer">
+    Create by KhAiMed | Copyright © 2023
+</div>
+<script src="gen.js"></script>
+</body>

@@ -1,36 +1,38 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, ipcRenderer } = require('electron');
 const path = require('path');
+const preLoad = require("./preload.js")
+const { Builder, By, Key } = require('selenium-webdriver');
+const ExcelJS = require('exceljs');
+const date = new Date();
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+
+let fullDate = `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
+
+let mainWindow;
+
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
+
+  mainWindow = new BrowserWindow({
     height: 600,
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
-    },
+      contextIsolation: false,
+      contentSecurityPolicy: "script-src 'self' 'unsafe-eval' 'zwxpBwzZbURUl3JTSABruEg1kvcUuFAJ' 'sha256-2l30QxSunNDaaNuCPRFcr2eKTYDRur0Sa2UznSlq8LQ='",
+    }
   });
 
-  // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -38,12 +40,115 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// to Call all function for each one click
+ipcMain.on('avito-caller', async (event, value) => {
+  let driver;
+
+  try {
+    driver = await new Builder().forBrowser('chrome').build();
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sheet 1');
+
+    await driver.manage().window().maximize(); // Maximize Window
+
+    let url = 'https://www.avito.ma/';
+    await driver.get(url)
+
+    await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
+    await driver.findElement(By.name('keyword')).sendKeys(value, Key.ENTER)
+
+    let data = [];
+    isStarted = true
+
+    ipcMain.on('stop-searching', async (event) => {
+      await driver.quit()
+    });
+
+    // Add headers to the data array
+    data.push(['Titles', 'Images', 'Prices', 'Url']);
+    // function to click and navigate for each page
+    const navigateToPage = async (x) => {
+      await driver.findElement(By.xpath(`//*[@id="__next"]/div/main/div/div[5]/div[1]/div/div[4]/div/a[${x}]`)).click();
+    }
+    // Upload Data
+    const uploadData = async () => {
+      let titles = await driver.findElements(By.className('czqClV'))
+      let images = await driver.findElements(By.className('dQOodK'))
+      let prices = await driver.findElements(By.className('dRjnHr'))
+      let urls = await driver.findElements(By.className('eTbzNs'))
+      for (let i = 0; i < titles.length; i++) {
+        if (prices[i]) {
+          let title = await titles[i].getText();
+          let image = await images[i].getAttribute('src');
+          let price = await prices[i].getText();
+          let url = await urls[i].getAttribute('href');
+          let article = title + '\n' + image + '\n' + price.replace(/,/g, '') + '\n' + url;
+          let articles = article.split('\n');
+          data.push(articles);
+        }
+      }
+    }
+    // The final number page to stop it
+    let finNumberPage = (await driver.findElements(By.xpath('/html/body/div[1]/div/main/div/div[5]/div[1]/div/div[4]/div/a'))).length
+    if(finNumberPage === 0){
+      await uploadData()
+      mainWindow.webContents.send("load-progress", 100);
+    }
+    // Browse for a specified period
+    for (let i = 0; i < finNumberPage; i++) {
+      console.log(`The page ${i + 1}`)
+
+      const progressValue = (((i + 1) / finNumberPage) * 100).toFixed(2);
+      console.log(progressValue)
+
+      //here i want to send the progressValue to rendrer.js
+      mainWindow.webContents.send("load-progress", progressValue);
+
+      await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
+      let numberPages = (await driver.findElements(By.className('sc-2y0ggl-1'))).length
+      if (i === 0) {
+        await uploadData()
+        await navigateToPage(numberPages);
+      } else if (i + 1 === finNumberPage) {
+        console.log('stopping the loop.');
+        break;
+      } else {
+        await uploadData();
+        await navigateToPage(numberPages);
+      }
+    }
+    worksheet.addRows(data)
+    workbook.xlsx.writeFile(`data_file/data.xlsx`)
+      .then(function () {
+        console.log('Excel file created');
+      })
+      .catch(function (error) {
+        console.error('Error creating Excel file:', error);
+      });
+    await driver.quit();
+  } finally {
+    await driver.quit();
+  }
+});
+
+ipcMain.on('jumia-caller', (event, value) => {
+  preLoad.jumiaProcedure(value)
+});
+
+ipcMain.on('aliexpress-caller', (event, value) => {
+  preLoad.aliexpressProcedure(value)
+});
+
+ipcMain.on('banggood-caller', (event, value) => {
+  preLoad.banggoodProcedure(value)
+});
+
+
+
+

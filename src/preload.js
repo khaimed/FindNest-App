@@ -1,2 +1,19 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+
+
+const SeleniumFunctions = {
+    avitoProcedure: async (value) => {
+        
+    },
+    jumiaProcedure: async (value) => {
+
+    },
+    aliexpressProcedure: async (value) => {
+
+    },
+    banggoodProcedure: async (value) => {
+
+    }
+};
+
+
+module.exports = SeleniumFunctions;
