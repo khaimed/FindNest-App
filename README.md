@@ -9,7 +9,7 @@ Boost your product searches effortlessly with FindNest App! This Electron-powere
 ## Table of Contents
 
 - [Features](#features)
-- [Getting_Started](#Getting_Started)
+- [Getting Started](#Getting_Started)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
