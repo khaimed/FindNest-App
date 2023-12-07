@@ -1,12 +1,7 @@
-const { app, BrowserWindow, ipcMain, ipcRenderer } = require('electron');
+const { app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
-const preLoad = require("./preload.js")
 const { Builder, By, Key } = require('selenium-webdriver');
 const ExcelJS = require('exceljs');
-const date = new Date();
-
-
-let fullDate = `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}`
 
 let mainWindow;
 
@@ -138,15 +133,15 @@ ipcMain.on('avito-caller', async (event, value) => {
 });
 
 ipcMain.on('jumia-caller', (event, value) => {
-  preLoad.jumiaProcedure(value)
+  
 });
 
 ipcMain.on('aliexpress-caller', (event, value) => {
-  preLoad.aliexpressProcedure(value)
+  
 });
 
 ipcMain.on('banggood-caller', (event, value) => {
-  preLoad.banggoodProcedure(value)
+  
 });
 
 
