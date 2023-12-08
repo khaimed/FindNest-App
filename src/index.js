@@ -132,8 +132,25 @@ ipcMain.on('avito-caller', async (event, value) => {
   }
 });
 
-ipcMain.on('jumia-caller', (event, value) => {
+ipcMain.on('jumia-caller',  async (event, value) => {
+  let driver;
+    try {
+      const driver = await new Builder().forBrowser('chrome').build();
+      
+      await driver.manage().window().maximize(); // Maximize Window
   
+      let url = 'https://www.jumia.ma/';
+      await driver.get(url)
+
+      if(await driver.findElement(By.css('.popup')).getAttribute('class').then(classes => classes.includes('_open'))){
+          await driver.findElement(By.xpath('/html/body/div[1]/div[4]/div/section/button')).click()
+      }
+      // put the value to search
+      await driver.findElement(By.name('q')).sendKeys(value);
+      await driver.findElement(By.xpath('/html/body/div[1]/header/section/form/button')).click()
+    }finally {
+      await driver.quit()
+    }
 });
 
 ipcMain.on('aliexpress-caller', (event, value) => {
