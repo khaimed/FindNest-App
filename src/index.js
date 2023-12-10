@@ -1,7 +1,12 @@
 const { app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const { Builder, By, Key } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
 const ExcelJS = require('exceljs');
+
+
+let options = new chrome.Options();
+options.addArguments('--headless');
 
 let mainWindow;
 
@@ -46,17 +51,18 @@ ipcMain.on('avito-caller', async (event, value) => {
   let driver;
 
   try {
-    driver = await new Builder().forBrowser('chrome').build();
+    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+
 
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
-    await driver.manage().window().maximize(); // Maximize Window
+    // await driver.manage().window().maximize(); // Maximize Window
 
     let url = 'https://www.avito.ma/';
     await driver.get(url)
 
-    await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
+    // await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
     await driver.findElement(By.name('keyword')).sendKeys(value, Key.ENTER)
 
     let data = [];
@@ -106,7 +112,7 @@ ipcMain.on('avito-caller', async (event, value) => {
       //here i want to send the progressValue to rendrer.js
       mainWindow.webContents.send("load-progress", progressValue);
 
-      await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
+      // await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
       let numberPages = (await driver.findElements(By.className('sc-2y0ggl-1'))).length
       if (i === 0) {
         await uploadData()
@@ -128,7 +134,8 @@ ipcMain.on('avito-caller', async (event, value) => {
         console.error('Error creating Excel file:', error);
       });
     await driver.quit();
-  } finally {
+  } catch (error){
+    console.log("the error is :", error)
     await driver.quit();
   }
 });
@@ -148,7 +155,8 @@ ipcMain.on('jumia-caller',  async (event, value) => {
       }
       // put the value to search
       await driver.findElement(By.name('q')).sendKeys(value,Key.ENTER);
-    }finally {
+      
+    }catch {
       await driver.quit()
     }
 });
