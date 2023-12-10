@@ -13,6 +13,7 @@ const createWindow = () => {
 
   mainWindow = new BrowserWindow({
     height: 600,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -146,8 +147,7 @@ ipcMain.on('jumia-caller',  async (event, value) => {
           await driver.findElement(By.xpath('/html/body/div[1]/div[4]/div/section/button')).click()
       }
       // put the value to search
-      await driver.findElement(By.name('q')).sendKeys(value);
-      await driver.findElement(By.xpath('/html/body/div[1]/header/section/form/button')).click()
+      await driver.findElement(By.name('q')).sendKeys(value,Key.ENTER);
     }finally {
       await driver.quit()
     }

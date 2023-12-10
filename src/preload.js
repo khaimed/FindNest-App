@@ -17,10 +17,10 @@ khaimedButton.addEventListener("click", () => {
 });
 // click for open browser
 facebookButton.addEventListener("click", () => {
-  shell.openExternal("https://www.facebook.com/khaimed");
+  shell.openExternal("https://www.facebook.com/khaimedev");
 });
 instagramButton.addEventListener("click", () => {
-  shell.openExternal("https://www.instagram.com/khaimed1");
+  shell.openExternal("https://www.instagram.com/khaimedev");
 });
 twitterButton.addEventListener("click", () => {
   shell.openExternal("https://www.twitter.com/khaimed1");
@@ -29,7 +29,7 @@ linkedinButton.addEventListener("click", () => {
   shell.openExternal("https://www.linkedin.com/in/khaimed");
 });
 youtubeButton.addEventListener("click", () => {
-  shell.openExternal("https://www.youtube.com/@khalidaitmhamed");
+  shell.openExternal("https://www.youtube.com/@khaimedev");
 });
 
 // click for call function selenium
