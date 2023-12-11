@@ -111,8 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
               });
             });
-  
-            console.log(products);
             if (products.length == 1) {
               const productDiv = document.createElement("div");
               productDiv.className = "product";
@@ -130,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
               document.getElementById("container").appendChild(productDiv);
             } else {
               products.forEach((product) => {
-                console.log(product);
                 const productDiv = document.createElement("div");
                 productDiv.className = "product";
   

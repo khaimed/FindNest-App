@@ -66,7 +66,6 @@ ipcMain.on('avito-caller', async (event, value) => {
     await driver.findElement(By.name('keyword')).sendKeys(value, Key.ENTER)
 
     let data = [];
-    isStarted = true
 
     ipcMain.on('stop-searching', async (event) => {
       await driver.quit()
@@ -104,10 +103,10 @@ ipcMain.on('avito-caller', async (event, value) => {
     }
     // Browse for a specified period
     for (let i = 0; i < finNumberPage; i++) {
-      console.log(`The page ${i + 1}`)
+      // console.log(`The page ${i + 1}`)
 
       const progressValue = (((i + 1) / finNumberPage) * 100).toFixed(2);
-      console.log(progressValue)
+      // console.log(progressValue)
 
       //here i want to send the progressValue to rendrer.js
       mainWindow.webContents.send("load-progress", progressValue);
@@ -143,7 +142,7 @@ ipcMain.on('avito-caller', async (event, value) => {
 ipcMain.on('jumia-caller',  async (event, value) => {
   let driver;
     try {
-      const driver = await new Builder().forBrowser('chrome').build();
+      driver = await new Builder().forBrowser('chrome').build();
       
       await driver.manage().window().maximize(); // Maximize Window
   
@@ -156,8 +155,28 @@ ipcMain.on('jumia-caller',  async (event, value) => {
       // put the value to search
       await driver.findElement(By.name('q')).sendKeys(value,Key.ENTER);
       
-    }catch {
-      await driver.quit()
+      
+      const getfinNumberPage = async () => {
+          const lengthOfBar = await driver.findElements(By.xpath('//*[@id="jm"]/main/div[2]/div[3]/section/div[2]/a'))
+          let lengthValue;
+          if(lengthOfBar.length == 6){
+            lengthValue = await driver.findElement(By.xpath('/html/body/div[1]/main/div[2]/div[3]/section/div[2]/a[4]')).getText()
+              return lengthValue
+          } else if (lengthOfBar.length == 7){
+              await driver.findElement(By.xpath('/html/body/div[1]/main/div[2]/div[3]/section/div[2]/a[7]')).click()
+              lengthValue = await driver.findElement(By.xpath('/html/body/div[1]/main/div[2]/div[3]/section/div[2]/a[5]')).getText()
+              await driver.findElement(By.xpath('/html/body/div[1]/main/div[2]/div[3]/section/div[2]/a[1]')).click()
+            return lengthValue
+          } else if(lengthOfBar == 0){
+            return lengthValue = lengthOfBar.length
+          }
+      }
+      
+      getfinNumberPage()
+
+    } catch (error){
+      console.log("the error is :", error)
+      await driver.quit();
     }
 });
 
