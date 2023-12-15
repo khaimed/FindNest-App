@@ -65,4 +65,6 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use and 
 For any questions or suggestions, feel free to contact the project maintainer:
 
 - **Khaimed**
+- [facebook.com/khaimedev](www.facebook.com/khaimedev)
+- [instagram.com/khaimedev](www.instagram.com/khaimedev)
 - **Email:** khalid.aitmhamed@hotmail.com
