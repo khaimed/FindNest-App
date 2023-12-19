@@ -56,122 +56,56 @@ document.querySelector(".search").addEventListener("click", () => {
 document.querySelector(".close").addEventListener("click",() => {
   document.querySelector(".result").style = "";
   document.getElementById("load_zone").style = "";
-  document.getElementById("container").innerHTML = '';
+  const products = document.querySelectorAll('.product');
+
+  // Remove all product elements
+  products.forEach(product => {
+    product.remove();
+  });
   ipcRenderer.send('delete-all-data');
-  mainWindow.webContents.reload();
 })
 
 // Execute a function when the user presses a key on the keyboard
-document
-  .querySelector('input[type="text"]')
-  .addEventListener("keypress", function (event) {
-    // If the user presses the "Enter" key on the keyboard
+document.querySelector('input[type="text"]').addEventListener("keypress", function (event) {
     if (
       event.key === "Enter" &&
       document.querySelector("input[type=text]").value != ""
     ) {
-      // Cancel the default action, if needed
       event.preventDefault();
-      // Trigger the button element with a click
       document.querySelector(".search").click();
+      document.getElementById('load_zone').style.display = "block"
+      document.getElementById("is_charge").style.width = 0 + "%";
+      document.getElementById("is_number").innerHTML = 0 + "%";
     }
   });
 
 document.addEventListener("DOMContentLoaded", function () {
   ipcRenderer.on('data-read', (event, data) => {
     Object.keys(data).forEach((itemId) => {
-        const item = data[itemId];
-  
-        // Create a div for each item
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'product'; // You can customize the class
-  
-        // Set the innerHTML of the div using the template string
-        itemDiv.innerHTML = `
-          <a href="${item.urls}" target="_blank" rel="noopener noreferrer">
-            <img src="${item.images}" alt="image">
-            <p class="product_title">${item.titles}</p>
-            <p class="product_price">${item.prices}</p>
-          </a>
-        `;
+      const item = data[itemId];
 
-        container.appendChild(itemDiv);
-      });
+      // Create a div for each item
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'product';
+
+      itemDiv.innerHTML = `
+        <a href="${item.urls}" target="_blank" rel="noopener noreferrer">
+          <img src="${item.images}" alt="image">
+          <p class="product_title">${item.titles}</p>
+          <p class="product_price">${item.prices}</p>
+        </a>
+      `;
+
+      container.appendChild(itemDiv);
     });
-    
+  });
+  
   ipcRenderer.on("load-progress", async (event, value) => {
     document.getElementById("load_zone").style.display = "block";
     document.getElementById("is_charge").style.width = value + "%";
     document.getElementById("is_number").innerHTML = value + "%";
     if (value == 100.0) {
       document.querySelector(".result").style.top = "0";
-      // setTimeout(() => {
-      //   const excelFilePath = path.join(
-      //     __dirname,
-      //     "../data_file/data.xlsx"
-      //   );
-  
-      //   let products = [];
-  
-      //   // Create a new workbook and read the Excel file
-      //   const workbook = new ExcelJS.Workbook();
-      //   workbook.xlsx
-      //     .readFile(excelFilePath)
-      //     .then(() => {
-      //       // Iterate over each sheet in the workbook
-      //       workbook.eachSheet((sheet, sheetId) => {
-      //         console.log(`Sheet Name: ${sheet.name}`);
-  
-      //         // Iterate over each row in the sheet
-      //         sheet.eachRow((row, rowNumber) => {
-      //           if (rowNumber != 1) {
-      //             let product = [];
-      //             row.eachCell((cell) => {
-      //               product.push(cell.value);
-      //             });
-  
-      //             products.push(product);
-      //           }
-      //         });
-      //       });
-      //       if (products.length == 1) {
-      //         const productDiv = document.createElement("div");
-      //         productDiv.className = "product";
-  
-      //         // Set the innerHTML of the div using the template string
-      //         productDiv.innerHTML = `
-      //             <a href="${products[0][3]}" target="_blank" rel="noopener noreferrer">
-      //               <img src="${products[0][1]}" alt="image">
-      //               <p class="product_title">${products[0][0]}</p>
-      //               <p class="product_price">${products[0][2]}</p>
-      //             </a>
-      //           `;
-  
-      //         // Append the created div to the container
-      //         document.getElementById("container").appendChild(productDiv);
-      //       } else {
-      //         products.forEach((product) => {
-      //           const productDiv = document.createElement("div");
-      //           productDiv.className = "product";
-  
-      //           // Set the innerHTML of the div using the template string
-      //           productDiv.innerHTML = `
-      //               <a href="${product[3]}" target="_blank" rel="noopener noreferrer">
-      //                 <img src="${product[1]}" alt="image">
-      //                 <p class="product_title">${product[0]}</p>
-      //                 <p class="product_price">${product[2]}</p>
-      //               </a>
-      //             `;
-  
-      //           // Append the created div to the container
-      //           document.getElementById("container").appendChild(productDiv);
-      //         });
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error reading Excel file:", error.message);
-      //     });
-      // }, 3000)
     }
   });
 });
@@ -179,4 +113,41 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("stop").addEventListener("click", function () {
   document.getElementById("load_zone").style = "";
   ipcRenderer.send("stop-searching");
+});
+
+document.querySelector(".extract_button").addEventListener("click", function () {
+  const products = document.querySelectorAll('.product');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Products');
+
+  // Add headers to the worksheet
+  worksheet.addRow(["Href", "Image", "Title", "Price"]);
+
+  // Iterate through products and add data to the worksheet
+  products.forEach(product => {
+    const hrefProduct = product.querySelector("a").href;
+    const imageProduct = product.querySelector("img").src;
+    const titleProduct = product.querySelector(".product_title").textContent;
+    const priceProduct = product.querySelector(".product_price").textContent;
+
+    // Add a new row with product data
+    worksheet.addRow([hrefProduct, imageProduct, titleProduct, priceProduct]);
+  });
+
+  // Create a blob from the Excel workbook
+  workbook.xlsx.writeBuffer().then(buffer => {
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Create an anchor element and set its attributes
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'products.xlsx';
+
+    // Append the anchor element to the document and click it programmatically
+    document.body.appendChild(a);
+    a.click();
+
+    // Remove the anchor element
+    document.body.removeChild(a);
+  });
 });

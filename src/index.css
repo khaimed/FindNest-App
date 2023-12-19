@@ -247,12 +247,10 @@ body{
   opacity: 1;
   transform: translateY(-160px);
 }
-.result form {
+.result .extract_button{
   position: absolute;
   bottom: 0;
   margin-bottom: 17px;
-}
-.result .extract_button{
   height: 34px;
   padding: 0 10px;
   background: #1a1a1a;

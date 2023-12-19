@@ -2,39 +2,6 @@ const { app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const { Builder, By, Key } = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
-// const ExcelJS = require('exceljs');
-
-const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, push, set, onValue, remove} = require('firebase/database');
-
-const firebaseConfig = {
-  // Add your configuration firebase
-};
-
-// Initialize Firebase
-const findNest = initializeApp(firebaseConfig);
-const database = getDatabase(findNest);
-
-var findNestDB = ref(database, "findnest/findNestApp");
-
-const saveAppDB = (title, image, price, url) => {
-  // Call push as a method on the reference
-  var newFindNestDB = push(findNestDB);
-
-  // Set data using the push key
-  set(newFindNestDB, {
-    titles: title,
-    images: image,
-    prices: price,
-    urls: url
-  }, (error) => {
-    if (error) {
-      console.error("Data could not be saved.", error);
-    } else {
-      console.log("Data saved successfully.");
-    }
-  });
-};
 
 let options = new chrome.Options();
 options.addArguments('--headless');
@@ -78,6 +45,45 @@ app.on('activate', () => {
   }
 });
 
+const { initializeApp } = require('firebase/app');
+const { getDatabase, ref, push, set, onValue, remove} = require('firebase/database');
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA4a8FT5fWjqsPFrBZE28kaycap5Dw6y-c",
+  authDomain: "findnestapp.firebaseapp.com",
+  databaseURL: "https://findnestapp-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "findnestapp",
+  storageBucket: "findnestapp.appspot.com",
+  messagingSenderId: "978620798503",
+  appId: "1:978620798503:web:8859e9550aaf11052be002",
+  measurementId: "G-KN861XYMZ2"
+};
+
+// Initialize Firebase
+const findNest = initializeApp(firebaseConfig);
+const database = getDatabase(findNest);
+
+var findNestDB = ref(database, "findnest/findNestApp");
+
+const saveAppDB = (title, image, price, url) => {
+  // Call push as a method on the reference
+  var newFindNestDB = push(findNestDB);
+
+  // Set data using the push key
+  set(newFindNestDB, {
+    titles: title,
+    images: image,
+    prices: price,
+    urls: url
+  }, (error) => {
+    if (error) {
+      console.error("Data could not be saved.", error);
+    } else {
+      console.log("Data saved successfully.");
+    }
+  });
+};
+
 ipcMain.on('delete-all-data', (event) => {
   // Reference to the entire data
   const entireDataRef = ref(database);
@@ -99,16 +105,9 @@ ipcMain.on('avito-caller', async (event, value) => {
   try {
     driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
 
-
-    // const workbook = new ExcelJS.Workbook();
-    // const worksheet = workbook.addWorksheet('Sheet 1');
-
-    // await driver.manage().window().maximize(); // Maximize Window
-
     let url = 'https://www.avito.ma/';
     await driver.get(url)
 
-    // await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
     await driver.findElement(By.name('keyword')).sendKeys(value, Key.ENTER)
 
     let data = [];
@@ -158,7 +157,6 @@ ipcMain.on('avito-caller', async (event, value) => {
       //here i want to send the progressValue to rendrer.js
       mainWindow.webContents.send("load-progress", progressValue);
 
-      // await driver.executeScript('document.getElementById("google_ads_iframe_58092247/d_am_rm_0__container__").remove()');
       let numberPages = (await driver.findElements(By.className('sc-2y0ggl-1'))).length
       if (i === 0) {
         await uploadData()
@@ -171,14 +169,7 @@ ipcMain.on('avito-caller', async (event, value) => {
         await navigateToPage(numberPages);
       }
     }
-    // worksheet.addRows(data)
-    // workbook.xlsx.writeFile(`data_file/data.xlsx`)
-    //   .then(function () {
-    //     console.log('Excel file created');
-    //   })
-    //   .catch(function (error) {
-    //     console.error('Error creating Excel file:', error);
-    //   });
+
     onValue(findNestDB, (snapshot) => {
       const data = snapshot.val();
       mainWindow.webContents.send('data-read', data);
