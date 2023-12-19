@@ -1,10 +1,15 @@
 {
   "name": "findnest-app",
+  "productName": "Searcher Product",
   "version": "1.0.0",
   "description": "Electron and Selenium-powered app for automating product searches.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "Leave it blank or specify a test command if you have automated tests."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
   "repository": {
     "type": "git",
@@ -17,10 +22,29 @@
     "product",
     "search"
   ],
-  "author": "Khalid Ait M'Hamed",
+  "author": {
+    "name": "Khalid Ait M'hamed",
+    "email": "khalid.aitmhamed@hotmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/khaimed/FindNest-App/issues"
   },
-  "homepage": "https://github.com/khaimed/FindNest-App#readme"
+  "homepage": "https://github.com/khaimed/FindNest-App#readme",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "exceljs": "^4.4.0",
+    "firebase": "^10.7.1",
+    "selenium-webdriver": "^4.16.0",
+    "webdriverio": "^8.24.12"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
+    "electron": "28.0.0"
+  }
 }
