@@ -29,7 +29,7 @@ Follow these steps to get started with FindNest:
 
 1. **Clone the Repository:**
 ```bash
-   git clone https://github.com/khaimed/findnest-app.git
+   git clone https://github.com/khaimed/FindNest-App.git
 ```
 2. **Install Dependencies:**
 ```bash
