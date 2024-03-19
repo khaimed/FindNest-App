@@ -45,26 +45,6 @@ app.on('activate', () => {
   }
 });
 
-const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, push, set, onValue, remove} = require('firebase/database');
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA4a8FT5fWjqsPFrBZE28kaycap5Dw6y-c",
-  authDomain: "findnestapp.firebaseapp.com",
-  databaseURL: "https://findnestapp-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "findnestapp",
-  storageBucket: "findnestapp.appspot.com",
-  messagingSenderId: "978620798503",
-  appId: "1:978620798503:web:8859e9550aaf11052be002",
-  measurementId: "G-KN861XYMZ2"
-};
-
-// Initialize Firebase
-const findNest = initializeApp(firebaseConfig);
-const database = getDatabase(findNest);
-
-var findNestDB = ref(database, "findnest/findNestApp");
-
 const saveAppDB = (title, image, price, url) => {
   // Call push as a method on the reference
   var newFindNestDB = push(findNestDB);
