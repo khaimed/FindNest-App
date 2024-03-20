@@ -23,6 +23,8 @@ Boost your product searches effortlessly with FindNest App! This Electron-powere
 
 - **Efficient and Accelerated Searches:** Say goodbye to manual searches and enjoy faster, more efficient product searches with FindNest.
 
+- **Excel.js Integration:** With Excel.js integration, managing and analyzing search results becomes seamless and convenient.
+
 ## Getting Started
 
 Follow these steps to get started with FindNest:
