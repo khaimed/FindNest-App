@@ -2,8 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Description
-
 Boost your product searches effortlessly with FindNest App! This Electron-powered tool, utilizing Selenium automation, streamlines and accelerates your search process. Say goodbye to manual searches and welcome efficient, automated results.
 
 ## Table of Contents
