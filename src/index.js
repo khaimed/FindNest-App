@@ -83,7 +83,9 @@ ipcMain.on('avito-caller', async (event, value) => {
   let driver;
 
   try {
-    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+    driver = await new Builder().forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
 
     let url = 'https://www.avito.ma/';
     await driver.get(url)
@@ -164,7 +166,9 @@ ipcMain.on('avito-caller', async (event, value) => {
 ipcMain.on('jumia-caller',  async (event, value) => {
   let driver;
     try {
-      driver = await new Builder().forBrowser('chrome').build();
+      driver = await new Builder().forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
       
       await driver.manage().window().maximize(); // Maximize Window
   
