@@ -35,7 +35,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "exceljs": "^4.4.0",
     "selenium-webdriver": "^4.16.0",
-    "webdriverio": "^8.24.12"
+    "webdriverio": "^9.19.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.2.0",
