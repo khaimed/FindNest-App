@@ -1,0 +1,532 @@
+/* ── Reset & base ───────────────────────────────────────────────────────── */
+* {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  outline: none;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg,
+    rgba(26,26,26,1) 0%,
+    rgba(51,51,51,1) 55%,
+    rgba(34,136,200,1) 100%);
+}
+
+/* ── Top bar ────────────────────────────────────────────────────────────── */
+.menu {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.logo img {
+  width: 44px;
+  cursor: pointer;
+}
+
+.social_media {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.social_media img {
+  width: 26px;
+  filter: invert(1);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social_media img:hover { transform: scale(1.15); }
+
+/* ── Content / search area ──────────────────────────────────────────────── */
+.content {
+  width: 100%;
+  height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+
+.search-container {
+  text-align: center;
+}
+
+.title {
+  font-size: 58px;
+  color: #f7f7f7;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: rgba(255,255,255,.65);
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+  background: rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 10px;
+  backdrop-filter: blur(4px);
+}
+
+.search-box select {
+  height: 36px;
+  border-radius: 7px;
+  border: none;
+  padding: 0 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.search-box input[type=text] {
+  width: 260px;
+  height: 36px;
+  border-radius: 7px;
+  border: none;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.search-box input[type=text]:focus {
+  outline: 2px solid #2288c8;
+}
+
+.search-btn {
+  height: 36px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 7px;
+  background: #2288c8;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-btn:hover:not(:disabled) { background: #1a6ea0; }
+.search-btn:disabled { opacity: 0.6; cursor: default; }
+
+.hint {
+  margin-top: 8px;
+  color: rgba(255,255,255,.4);
+  font-size: 12px;
+}
+
+/* ── Progress ───────────────────────────────────────────────────────────── */
+#progress-zone {
+  display: none;
+  text-align: center;
+  width: 320px;
+}
+
+.progress-label {
+  color: #e0e0e0;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #2288c8;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+.site-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.site-tag {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.site-tag.done  { background: rgba(34,200,100,.25); color: #7effc4; }
+.site-tag.error { background: rgba(255,80,80,.25);  color: #ffaaaa; }
+.site-tag.pending { background: rgba(255,255,255,.15); color: #ccc; }
+
+/* ── Results overlay ────────────────────────────────────────────────────── */
+.results-overlay {
+  position: fixed;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  background: rgba(18,18,18,.97);
+  transition: top 0.4s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.results-overlay.visible { top: 60px; }
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  flex-shrink: 0;
+}
+
+.results-meta {
+  color: rgba(255,255,255,.6);
+  font-size: 13px;
+}
+
+.results-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.export-btn {
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid #2288c8;
+  border-radius: 6px;
+  background: transparent;
+  color: #2288c8;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.export-btn:hover { background: rgba(34,136,200,.15); }
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.close-btn:hover { background: rgba(255,80,80,.3); }
+
+/* ── Results scroll area ────────────────────────────────────────────────── */
+#winner-zone,
+.products-grid {
+  flex-shrink: 0;
+}
+
+.results-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+/* The scroll target is the whole overlay minus fixed header */
+.results-overlay > #winner-zone,
+.results-overlay > .products-grid {
+  overflow-y: auto;
+}
+
+/* Override: make the overlay itself scroll */
+.results-overlay {
+  overflow-y: auto;
+}
+
+/* ── Winner card ────────────────────────────────────────────────────────── */
+#winner-zone {
+  padding: 16px 20px 0;
+  flex-shrink: 0;
+}
+
+.winner-card {
+  background: linear-gradient(135deg, #1a1a1a, #1c2e3f);
+  border: 2px solid #f5c518;
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.winner-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, rgba(245,197,24,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.winner-badge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #f5c518;
+  color: #111;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .5px;
+}
+
+.winner-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.05);
+}
+
+.winner-info { flex: 1; }
+
+.winner-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  padding-right: 80px;
+}
+
+.winner-price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f5c518;
+  margin-bottom: 2px;
+}
+
+.winner-old-price {
+  font-size: 13px;
+  color: rgba(255,255,255,.4);
+  text-decoration: line-through;
+  margin-bottom: 6px;
+}
+
+.winner-score {
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 4px;
+}
+
+.winner-explanation {
+  font-size: 12px;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 10px;
+}
+
+.winner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+
+.tag-site     { background: rgba(34,136,200,.25); color: #7ecfff; }
+.tag-location { background: rgba(255,255,255,.08); color: #ccc;    }
+.tag-rating   { background: rgba(255,200,50,.2);  color: #ffd97d; }
+.tag-reviews  { background: rgba(255,255,255,.08); color: #ccc;    }
+
+.winner-link {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 7px;
+  background: #2288c8;
+  color: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.winner-link:hover { background: #1a6ea0; }
+
+/* ── Products grid ──────────────────────────────────────────────────────── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 14px 20px 20px;
+}
+
+.product-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34,136,200,.4);
+}
+
+.product-card.is-winner {
+  border-color: #f5c518;
+}
+
+.rank-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,0,0,.6);
+  color: #ccc;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.rank-badge.gold { background: #f5c518; color: #111; font-weight: 700; }
+
+.score-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #2288c8;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.product-img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  background: rgba(255,255,255,.04);
+}
+
+.product-no-img {
+  width: 100%;
+  height: 150px;
+  background: rgba(255,255,255,.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.2);
+  font-size: 12px;
+}
+
+.product-body {
+  padding: 10px 12px 6px;
+}
+
+.product-title {
+  color: #eee;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-price {
+  color: #2288c8;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.product-old-price {
+  color: rgba(255,255,255,.35);
+  font-size: 11px;
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+.product-open-btn {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.06);
+  background: transparent;
+  color: rgba(255,255,255,.4);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.product-open-btn:hover {
+  background: rgba(34,136,200,.1);
+  color: #7ecfff;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,.35);
+  font-size: 12px;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(255,255,255,.2); border-radius: 5px; }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .title { font-size: 36px; }
+  .search-box { flex-direction: column; }
+  .search-box input[type=text] { width: 100%; }
+  .winner-card { flex-direction: column; }
+  .winner-img  { width: 100%; height: 160px; }
+}

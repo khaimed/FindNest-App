@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+  <title>FindNest App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Top bar ──────────────────────────────────────────────────────── -->
+  <div class="menu">
+    <div class="logo">
+      <span id="khaimed_button"><img src="../img/logo.png" alt="FindNest"></span>
+    </div>
+    <div class="social_media">
+      <span id="facebook_button"><img src="../img/social_media/facebook.png" alt="facebook"></span>
+      <span id="instagram_button"><img src="../img/social_media/instagram.png" alt="instagram"></span>
+      <span id="linkedin_button"><img src="../img/social_media/linkedin.png" alt="linkedin"></span>
+      <span id="twitter_button"><img src="../img/social_media/twitter.png" alt="twitter"></span>
+      <span id="youtube_button"><img src="../img/social_media/youtube.png" alt="youtube"></span>
+    </div>
+  </div>
+
+  <!-- ── Search area ──────────────────────────────────────────────────── -->
+  <div class="content">
+    <div class="search-container">
+      <h1 class="title">FindNest App</h1>
+      <p class="subtitle">Trouvez le meilleur produit au meilleur prix</p>
+      <div class="search-box">
+        <select id="site-select">
+          <option value="all">Tous les sites</option>
+          <!-- populated by renderer.js -->
+        </select>
+        <input type="text" id="search-input" placeholder="Rechercher un produit...">
+        <button class="search-btn" id="search-btn">Rechercher</button>
+      </div>
+      <p class="hint">Appuyez sur Entrée ou cliquez sur Rechercher</p>
+    </div>
+
+    <!-- ── Progress ────────────────────────────────────────────────────── -->
+    <div id="progress-zone">
+      <p class="progress-label" id="progress-label">Recherche en cours…</p>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="site-tags" id="site-tags"></div>
+    </div>
+  </div>
+
+  <!-- ── Results overlay ──────────────────────────────────────────────── -->
+  <div class="results-overlay" id="results-overlay">
+    <div class="results-header">
+      <span class="results-meta" id="results-meta"></span>
+      <div class="results-actions">
+        <button class="export-btn" id="export-btn">⬇ Exporter Excel</button>
+        <button class="close-btn" id="close-btn">✕</button>
+      </div>
+    </div>
+
+    <!-- Winner card -->
+    <div id="winner-zone"></div>
+
+    <!-- All products -->
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <div class="footer">Créé par KhAiMed | Copyright © 2024</div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

@@ -1,27 +1,26 @@
 {
   "name": "findnest-app",
-  "productName": "Searcher Product",
-  "version": "1.0.0",
-  "description": "Electron and Selenium-powered app for automating product searches.",
-  "main": "src/index.js",
+  "productName": "FindNest App",
+  "version": "2.0.0",
+  "description": "Moroccan e-commerce scraper — find the best product across Avito, Jumia, and more.",
+  "main": "src/main/main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start":   "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make":    "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "test":    "jest --testEnvironment=node",
+    "lint":    "echo \"No linting configured\""
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/khaimed/FindNest-App.git"
   },
-  "keywords": [
-    "electron",
-    "selenium",
-    "automation",
-    "product",
-    "search"
-  ],
+  "keywords": ["electron", "scraper", "morocco", "avito", "jumia", "product-search"],
   "author": {
     "name": "Khalid Ait M'hamed",
     "email": "khalid.aitmhamed@hotmail.com"
@@ -32,18 +31,19 @@
   },
   "homepage": "https://github.com/khaimed/FindNest-App#readme",
   "dependencies": {
+    "axios":                    "^1.7.7",
+    "cheerio":                  "^1.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "exceljs": "^4.4.0",
-    "selenium-webdriver": "^4.16.0",
-    "webdriverio": "^9.19.2"
+    "exceljs":                  "^4.4.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.2.0",
-    "@electron-forge/maker-deb": "^7.2.0",
-    "@electron-forge/maker-rpm": "^7.2.0",
-    "@electron-forge/maker-squirrel": "^7.2.0",
-    "@electron-forge/maker-zip": "^7.2.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
-    "electron": "35.7.5"
+    "@electron-forge/cli":                        "^7.2.0",
+    "@electron-forge/maker-deb":                  "^7.2.0",
+    "@electron-forge/maker-rpm":                  "^7.2.0",
+    "@electron-forge/maker-squirrel":             "^7.2.0",
+    "@electron-forge/maker-zip":                  "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives":  "^7.2.0",
+    "electron": "35.7.5",
+    "jest":     "^29.7.0"
   }
 }
